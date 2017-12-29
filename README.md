@@ -15,11 +15,11 @@ google drive, creamos un proyecto (le damos un nombre), y dentro del proyecto, e
 seleccionamos crear una nueva credencial 'OAuth 2.0 client ID'. Hay varios sitios en los que se 
 explica como realizarlo, por ejemplo: 
 'http://www.iperiusbackup.net/es/activar-la-api-de-google-drive-y-obtener-las-credenciales-para-la-copia-de-seguridad/'
-4. Obtenido nuestra credencial (id y secret el cual no debemos de proporcionarselo a nadie y 
+4. Obtenida nuestra credencial (id y secret los cuales no debemos de proporcionarselos a nadie y que 
 debemos guardar y usar con seguridad), vamos a crear el directorio de montaje, como ejemplo, voy a 
-indicarlo en '/mnt/drive1': 'mkdir /mnt/drive1'
+realizarlo en '/mnt/drive1': 'mkdir /mnt/drive1'
 5. De la misma forma, voy a crear un directorio para la configuración de esta cuenta de drive. Yo 
-aconsejo darle un nombre similar al del montaje; es algo personal, pero es más sencillo para la 
+aconsejo darle un nombre (bautizar la cuenta) similar al del montaje; es algo personal, pero es más sencillo para la 
 organización en caso de querer tener más de una cuenta montada en el sistema (más adelante lo 
 veremos). Para ello crearé un directorio bajo el directorio que usará plexdrive por defecto (como 
 digo es algo subjetivo, que cada uno puede crear donde quiera, pero sería lo correcto). A modo 
@@ -31,9 +31,10 @@ individual).
 plexdrive. Para ello lanzamos el comando de montaje, siguiendo con el ejemplo: 'plexdrive mount -c 
 /home/tu_nombre_usuario/.plexdrive/drive1 -o allow_other /mnt/drive1'
 7. A continuación nos informa de que necesitamos el id y secret de nuestra credencial que 
-deberíamos haber creado en el paso 3. Lo insertamos conforme nos pide, y nos debería de dar un enlace sobre el que tendríamos que acceder, nos dará un código 
+deberíamos haber creado en el paso 3. Lo insertamos conforme nos pide, y nos debería de dar un enlace sobre el que tendríamos que acceder, para 
+proporcionarnos token 
 que debemos indicar/pegar. En caso de que no nos de el enlace, reiniciar el equipo, y lanzar de nuevo la orden de montaje. No podemos seguir hasta que no 
-completemos esto (y a veces se atasca ahí). Una vez hecho, se quedará que parece que no hace 
+completemos esto (el token es necesario y a veces se atasca ahí, ó tarda un poco en acceder a la API). Una vez hecho, se quedará que parece que no hace 
 nada, adueñado de la 
 shell.
 8. Pulsamos 'CTRL+C' para matar el proceso, y a continuación lanzamos el comando de montaje con el 
@@ -63,6 +64,7 @@ nada en el directorio del montaje.
 - El directorio de trabajo por defecto de plexdrive es el 'home del usuario'/.plexdrive (si no indicamos un lugar de configuración en el comando de montaje, 
 será este el directorio de configuración por defecto). Además, en este directorio, se establecerá la base de datos Bolt a modo caché. Pero no es lo único que 
 usa como caché. En la base de datos se almacena la estructura de directorios (ó arbol de directorios del drive).
+- Para el uso de más de una cuenta de drive con plexdrive, es estrictamente necesario usar directorios de configuración diferentes. 
 
 Se irá ampliando y mejorando la miniguía, incluso si se desea, se pueden añadir usos relacionados con la herramienta. No obstante, comentar que el desarrollador 
 de plexdrive, está en un proyecto similar, multiplataforma, y la herramienta no es perfecta. Así también tenemos rclone como una gran alternativa, actualmente 

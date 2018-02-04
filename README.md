@@ -4,8 +4,8 @@ dudas que surgen, y aclarar como sería lo correcto en cuanto a uso/organizació
 
 1. En mi caso cuando instalo un binario, me gusta que esté disponible para su ejecución de la 
 misma forma que usamos cualquier utilidad en la shell. Es por ello que lo primero que deberíamos 
-hacer es obtener plexdrive, descomprimirlo, y moverlo a'/usr/local/bin'.
-2. Damos permiso de ejecución para todos los usuarios al binario: 'chmod a+x 
+hacer es obtener plexdrive, descomprimirlo, y moverlo a'/usr/local/bin' ó a '/bin'.
+2. Damos permiso de ejecución para todos los usuarios al binario, en el lugar en el que lo hemos movido: 'chmod a+x 
 /usr/local/bin/plexdrive'
 3. La primera vez que realizamos la configuración de plexdrive, nos pide el id y secret que 
 tenemos que realizar en nuestra cuenta de drive (crear una credencial OAuth). Para ello nos 
@@ -31,12 +31,7 @@ individual).
 plexdrive. Para ello lanzamos el comando de montaje, siguiendo con el ejemplo: 'plexdrive mount -c 
 /home/tu_nombre_usuario/.plexdrive/drive1 -o allow_other /mnt/drive1'
 7. A continuación nos informa de que necesitamos el id y secret de nuestra credencial que 
-deberíamos haber creado en el paso 3. Lo insertamos conforme nos pide, y nos debería de dar un enlace sobre el que tendríamos que acceder, para 
-proporcionarnos token 
-que debemos indicar/pegar. En caso de que no nos de el enlace, reiniciar el equipo, y lanzar de nuevo la orden de montaje. No podemos seguir hasta que no 
-completemos esto (el token es necesario y a veces se atasca ahí, ó tarda un poco en acceder a la API). Una vez hecho, se quedará que parece que no hace 
-nada, adueñado de la 
-shell.
+deberíamos haber creado en el paso 3. Lo insertamos conforme nos pide, y nos debería de dar un enlace sobre el que tendríamos que acceder, para proporcionarnos token que debemos indicar/pegar. En caso de que no nos de el enlace, reiniciar el equipo, y lanzar de nuevo la orden de montaje. No podemos seguir hasta que no completemos esto (el token es necesario y a veces se atasca ahí, ó tarda un poco en acceder a la API). Una vez hecho, se quedará que parece que no hace nada, adueñado de la shell.
 8. Pulsamos 'CTRL+C' para matar el proceso, y a continuación lanzamos el comando de montaje con el 
 '&' al final. De esta forma no se apodera de la shell, y a partir de ahora sería la forma ideal de 
 realizar el montaje quedando en segundo plano y sin necesidad de usar screen. Siguiendo el ejemplo: 'plexdrive mount -c
@@ -47,6 +42,12 @@ identificador de la cuenta, es decir, yo en el ejemplo, he usado por así decirl
 pues podría ser para esta segunda cuenta, drive2, y realizaría el montaje en /mnt/drive2, así como 
 crear su credencial OAuth, y su directorio de configuración 
 /home/tu_nombre_usuario/.plexdrive/drive2.
+
+POSIBLES ERRORES Y SOLUCIONES
+
+- Que en nuestro sistema no tengamos permisos de montaje con allow_other. Nos dirigimos a /etc/fuse.conf y descomentamos la linea (en caso de existir), ó incluimos: user_allow_other 
+- Si el montaje en algún momento se queda pinzado por alguna configuración incorrecta (posibles espacios al introducir los id, secret ó token), desmontar usando: 'fusermount -uz /turutademontaje'
+- Para reiniciar/resetear la config de una cuenta de drive, eliminamos los ficheros del directorio de configuración, por ejemplo: 'rm * /home/tu_nombre_usuario/.plexdrive/drive1/' (cuidado con las rutas y revisadlo bien). Básicamente son 2 los ficheros que eliminar, el config.json y token.json.
 
 ACLARACIONES:
 
@@ -65,6 +66,7 @@ nada en el directorio del montaje.
 será este el directorio de configuración por defecto). Además, en este directorio, se establecerá la base de datos Bolt a modo caché. Pero no es lo único que 
 usa como caché. En la base de datos se almacena la estructura de directorios (ó arbol de directorios del drive).
 - Para el uso de más de una cuenta de drive con plexdrive, es estrictamente necesario usar directorios de configuración diferentes. 
+- Puede ser interesante si usamos más de una cuenta con plexdrive, separar las caches de cada cuenta, para ello haríamos uso del modificador en el comando de montaje '-cache-file=/home/tu_nombre_usuario/.plexdrive/cache_drive1.bolt'  y en la segunda cuenta '-cache-file=/home/tu_nombre_usuario/.plexdrive/cache_drive2.bolt'. No obstante en la v5, no he conseguido realizar esta configuración. Tampoco lo deja muy claro su dev. De hecho revisando el código no veía el lugar donde recogiese el comando para realizar la configuración. Esto queda pendiente de observación y testeo.
 
 Se irá ampliando y mejorando la miniguía, incluso si se desea, se pueden añadir usos relacionados con la herramienta. No obstante, comentar que el desarrollador 
 de plexdrive, está en un proyecto similar, multiplataforma, y la herramienta no es perfecta. Así también tenemos rclone como una gran alternativa, actualmente 

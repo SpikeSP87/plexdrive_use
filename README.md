@@ -43,6 +43,10 @@ pues podría ser para esta segunda cuenta, drive2, y realizaría el montaje en /
 crear su credencial OAuth, y su directorio de configuración 
 /home/tu_nombre_usuario/.plexdrive/drive2.
 
+AÑADIDOS EN EL MONTAJE
+
+- Es posible que queramos solamente montar una parte del drive (puede ser interesante solo acceder a una carpeta concreta y así no cachear todo el drive); para ello añadiríamos el flag '--root-node-id=id_de_la_carpeta' (para más detalle de como extraerlo, y qué es, ir al apartado ACLARACIONES al final de la guía), quedando así nuestro comando de montaje, a modo ejemplo: 'plexdrive mount -c /home/tu_nombre_usuario/.plexdrive/drive1 -o allow_other --root-node-id=id_de_la_carpeta /mnt/drive1 &'
+
 POSIBLES ERRORES Y SOLUCIONES
 
 - Que en nuestro sistema no tengamos permisos de montaje con allow_other. Nos dirigimos a /etc/fuse.conf y descomentamos la linea (en caso de existir), ó incluimos: user_allow_other 
@@ -67,6 +71,7 @@ será este el directorio de configuración por defecto). Además, en este direct
 usa como caché. En la base de datos se almacena la estructura de directorios (ó arbol de directorios del drive).
 - Para el uso de más de una cuenta de drive con plexdrive, es estrictamente necesario usar directorios de configuración diferentes. 
 - Puede ser interesante si usamos más de una cuenta con plexdrive, separar las caches de cada cuenta, para ello haríamos uso del modificador en el comando de montaje '-cache-file=/home/tu_nombre_usuario/.plexdrive/cache_drive1.bolt'  y en la segunda cuenta '-cache-file=/home/tu_nombre_usuario/.plexdrive/cache_drive2.bolt'. No obstante en la v5, no he conseguido realizar esta configuración. Tampoco lo deja muy claro su dev. De hecho revisando el código no veía el lugar donde recogiese el comando para realizar la configuración. Esto queda pendiente de observación y testeo.
+- Sobre el flag '--root-node-id'. Google, por debajo de lo que vemos, tiene un sistema especial de nombrado e identificación de las carpetas, es decir, donde nosotros vemos 'carpeta x' (siendo este su nombre a modo ejemplo), Google asigna un id a cada carpeta/fichero de la forma '3tDv6PmjYG3aLO27R3OhMqYK2r3Vok17P' (una cadena de texto alfanumérica). Bien, teniendo esto claro, si queremos hacer uso del flag, y montar solamente una parte de nuestro Drive, es necesario saber que id tiene la carpeta que queremos coger como raíz del montaje. La única forma que se de momento rápida (me reservo una algo compleja), es mediante el inspector del navegador. Lo que yo hago es abrir el inspector, e inspeccionar el elemento de la web que contiene la carpeta, y en el inspector, a día de hoy (puede cambiar según Google haga/deshaga), nos aparecerá marcado un elemento div, y en este veremos un atributo 'data-id="codigo_id"'; pues ese codigo entre las comillas dobles es el id que debemos de indicar en el flag, tal como se indica en el apartado AÑADIDOS EN EL MONTAJE. Sé que sin imágenes puede ser complicado para alguien que no conoce estas funcionalidades de los navegadores y demás, pero si esta puede parecer compleja (cosa q no es), la otra q me reservo, tiene tela... xD Las ventajas de solamente montar una parte del drive son obvias, pues la base de datos queda reducida a lo que cuelga solamente de una carpeta, y no desde la raíz del drive (ahorrara peticiones a largo y corto plazo).
 
 Se irá ampliando y mejorando la miniguía, incluso si se desea, se pueden añadir usos relacionados con la herramienta. No obstante, comentar que el desarrollador 
 de plexdrive, está en un proyecto similar, multiplataforma, y la herramienta no es perfecta. Así también tenemos rclone como una gran alternativa, actualmente 
